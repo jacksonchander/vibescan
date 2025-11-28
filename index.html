@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeScan - Discover Your Universal Social Score</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%2300d4ff'>✨</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">VibeScan</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="dashboard.html" class="nav-dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">VibeScan</h1>
+            <p class="hero-subtitle">Discover Your Universal Social Score</p>
+            <p class="hero-description">
+                Unlock your social potential with AI-powered personality insights across all platforms
+            </p>
+            <button class="btn btn-primary btn-large hero-btn" onclick="startFreeTrial()">
+                Start Your 1-Day Free Trial
+            </button>
+            <p class="trial-info">No credit card required • Cancel anytime</p>
+        </div>
+        <div class="hero-visual">
+            <div class="score-preview">
+                <div class="score-circle-large">
+                    <span class="score-number">84</span>
+                    <span class="score-label">Sample Score</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Multi-Platform Score</h3>
+                    <p>Get a comprehensive score analyzing your personality across all social platforms in real-time</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Persona Improvement Tips</h3>
+                    <p>Receive daily AI-generated personalized tips to boost your social score and improve your vibe</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Shareable Score Graphics</h3>
+                    <p>Generate stunning graphics of your score to share on Instagram, Twitter, TikTok, and Facebook</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>Daily AI Updates</h3>
+                    <p>Your score updates daily with fresh insights and trending personality badges</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Achievement Badges</h3>
+                    <p>Earn exclusive badges as you improve your social vibe and reach milestone scores</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Leaderboard</h3>
+                    <p>Compare your vibe with others and see where you stand in the global community</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <div class="pricing-grid">
+                <!-- Free Trial Card -->
+                <div class="pricing-card free-trial-card">
+                    <div class="pricing-badge">Most Popular</div>
+                    <h3 class="pricing-title">Free Trial</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$0</span>
+                        <span class="price-duration">for 1 day</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Full access to dashboard</li>
+                        <li>✓ View your social score</li>
+                        <li>✓ Daily AI tips</li>
+                        <li>✓ Share score graphics</li>
+                    </ul>
+                    <button class="btn btn-primary btn-full" onclick="startFreeTrial()">Get Free Trial</button>
+                </div>
+
+                <!-- Monthly Card -->
+                <div class="pricing-card">
+                    <h3 class="pricing-title">Monthly</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$4.99</span>
+                        <span class="price-duration">per month</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Everything in Free Trial</li>
+                        <li>✓ Premium insights</li>
+                        <li>✓ Advanced badges</li>
+                        <li>✓ Monthly updates</li>
+                    </ul>
+                    <button class="btn btn-secondary btn-full" onclick="subscribePlan('monthly')">Subscribe Now</button>
+                </div>
+
+                <!-- Quarterly Card -->
+                <div class="pricing-card">
+                    <h3 class="pricing-title">Quarterly</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$12.99</span>
+                        <span class="price-duration">per 3 months</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Everything in Monthly</li>
+                        <li>✓ Priority support</li>
+                        <li>✓ Exclusive features</li>
+                        <li>✓ Save 13%</li>
+                    </ul>
+                    <button class="btn btn-secondary btn-full" onclick="subscribePlan('quarterly')">Subscribe Now</button>
+                </div>
+
+                <!-- Yearly Card -->
+                <div class="pricing-card">
+                    <div class="pricing-badge">Best Value</div>
+                    <h3 class="pricing-title">Yearly</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$39.99</span>
+                        <span class="price-duration">per year</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Everything included</li>
+                        <li>✓ VIP support</li>
+                        <li>✓ Early access to new features</li>
+                        <li>✓ Save 33%</li>
+                    </ul>
+                    <button class="btn btn-secondary btn-full" onclick="subscribePlan('yearly')">Subscribe Now</button>
+                </div>
+            </div>
+
+            <!-- Non-Refundable Warning -->
+            <div class="warning-box">
+                <p class="warning-text">⚠️ <strong>All subscriptions are non-refundable.</strong> Please review the terms carefully before purchasing. Subscriptions renew automatically; you can cancel anytime from your account settings.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Discover Your Vibe?</h2>
+            <p>Join thousands of users improving their social presence with VibeScan</p>
+            <button class="btn btn-primary btn-large" onclick="startFreeTrial()">Start Free Trial Now</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>VibeScan</h4>
+                    <p>Discover your universal social score</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VibeScan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="trialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('trialModal')">&times;</span>
+            <h2>Start Your Free Trial</h2>
+            <p>You're one step away from discovering your social score!</p>
+            <div class="form-group">
+                <input type="email" placeholder="Enter your email" id="trialEmail" class="form-input">
+            </div>
+            <button class="btn btn-primary btn-full" onclick="confirmTrial()">Start Trial (1 Day Free)</button>
+            <p class="modal-note">No credit card required. Cancel anytime.</p>
+        </div>
+    </div>
+
+    <div id="subscriptionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('subscriptionModal')">&times;</span>
+            <h2 id="subTitle">Subscribe to VibeScan</h2>
+            <p>Choose your preferred subscription plan:</p>
+            <div id="subDetails"></div>
+            <button class="btn btn-primary btn-full" onclick="processPayment()">Proceed to Payment</button>
+            <p class="modal-warning">⚠️ This is a non-refundable subscription. By subscribing, you agree to our terms.</p>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

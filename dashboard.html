@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Dashboard - VibeScan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%2300d4ff'>✨</text></svg>">
+</head>
+<body class="dashboard-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">VibeScan</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#leaderboard">Leaderboard</a></li>
+                <li><button class="btn btn-small" onclick="logout()">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <section class="dashboard-header">
+            <div class="header-content">
+                <h1>Your Dashboard</h1>
+                <p class="header-subtitle" id="lastUpdated">Last updated: Today</p>
+                <button class="btn btn-secondary" onclick="refreshScore()">🔄 Refresh Score</button>
+            </div>
+        </section>
+
+        <!-- Score Section -->
+        <section class="score-section">
+            <div class="score-main">
+                <div class="score-circle">
+                    <div class="score-inner">
+                        <span class="score-number" id="mainScore">84</span>
+                        <span class="score-label">Universal<br>Social Score</span>
+                    </div>
+                </div>
+                <div class="score-info">
+                    <p class="personality-type">
+                        Your Personality: <strong id="personalityType">The Influencer</strong>
+                    </p>
+                    <p class="personality-desc" id="personalityDesc">
+                        You have excellent communication skills and a natural ability to connect with others.
+                    </p>
+                    <div class="update-status">
+                        <span class="badge badge-success">✓ Updated Today</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sub-Scores Section -->
+        <section class="subscores-section">
+            <h2>Your Social Metrics</h2>
+            <div class="subscores-grid">
+                <div class="subscore-card">
+                    <div class="subscore-header">
+                        <h3>Confidence</h3>
+                        <span class="subscore-value" id="confidenceScore">78</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="confidenceBar" style="width: 78%"></div>
+                    </div>
+                    <p class="subscore-tip">Keep building on your strengths</p>
+                </div>
+
+                <div class="subscore-card">
+                    <div class="subscore-header">
+                        <h3>Friendliness</h3>
+                        <span class="subscore-value" id="friendlinessScore">88</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="friendlinessBar" style="width: 88%"></div>
+                    </div>
+                    <p class="subscore-tip">Your warmth shines through!</p>
+                </div>
+
+                <div class="subscore-card">
+                    <div class="subscore-header">
+                        <h3>Trust</h3>
+                        <span class="subscore-value" id="trustScore">82</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="trustBar" style="width: 82%"></div>
+                    </div>
+                    <p class="subscore-tip">People value your reliability</p>
+                </div>
+
+                <div class="subscore-card">
+                    <div class="subscore-header">
+                        <h3>Professionalism</h3>
+                        <span class="subscore-value" id="professionalismScore">85</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="professionalismBar" style="width: 85%"></div>
+                    </div>
+                    <p class="subscore-tip">You maintain high standards</p>
+                </div>
+
+                <div class="subscore-card warning">
+                    <div class="subscore-header">
+                        <h3>Red-Flag Index</h3>
+                        <span class="subscore-value" id="redflagScore">15</span>
+                    </div>
+                    <div class="progress-bar warning-bar">
+                        <div class="progress-fill warning-fill" id="redflagBar" style="width: 15%"></div>
+                    </div>
+                    <p class="subscore-tip">Lower is better - you're great!</p>
+                </div>
+
+                <div class="subscore-card">
+                    <div class="subscore-header">
+                        <h3>Engagement</h3>
+                        <span class="subscore-value" id="engagementScore">81</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="engagementBar" style="width: 81%"></div>
+                    </div>
+                    <p class="subscore-tip">Your interactions matter</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Section -->
+        <section class="tips-section">
+            <h2>🎯 Your Daily AI Improvement Tips</h2>
+            <div class="tips-container" id="tipsContainer">
+                <!-- Tips will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section class="achievements-section">
+            <h2>🏆 Your Badges & Achievements</h2>
+            <div class="badges-container" id="badgesContainer">
+                <!-- Badges will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Share Section -->
+        <section class="share-section">
+            <div class="share-container">
+                <h2>📱 Share Your Score</h2>
+                <p>Celebrate your vibe with friends on social media</p>
+                <div class="share-buttons">
+                    <button class="share-btn facebook" onclick="shareScore('facebook')">
+                        📘 Facebook
+                    </button>
+                    <button class="share-btn instagram" onclick="shareScore('instagram')">
+                        📷 Instagram
+                    </button>
+                    <button class="share-btn twitter" onclick="shareScore('twitter')">
+                        𝕏 Twitter
+                    </button>
+                    <button class="share-btn tiktok" onclick="shareScore('tiktok')">
+                        🎵 TikTok
+                    </button>
+                    <button class="share-btn download" onclick="downloadScoreGraphic()">
+                        ⬇️ Download
+                    </button>
+                </div>
+            </div>
+            <!-- Score Graphic Preview -->
+            <div class="score-graphic" id="scoreGraphic">
+                <div class="graphic-inner">
+                    <div class="graphic-circle">
+                        <span class="graphic-score" id="graphicScore">84</span>
+                    </div>
+                    <p class="graphic-text">My VibeScan Score</p>
+                    <p class="graphic-url">vibescan.com</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" class="leaderboard-section">
+            <h2>🚀 Global Leaderboard</h2>
+            <div class="leaderboard-container">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>User</th>
+                            <th>Score</th>
+                            <th>Personality</th>
+                            <th>Badges</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <!-- Leaderboard data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <p class="leaderboard-note">You are ranked #<strong id="userRank">42</strong> globally</p>
+        </section>
+
+        <!-- History Section -->
+        <section class="history-section">
+            <h2>📊 Score History</h2>
+            <div class="history-container">
+                <div class="history-chart" id="historyChart">
+                    <!-- Chart will be inserted here -->
+                </div>
+                <p class="history-info">Your score has improved by <strong id="scoreImprovement">+5 points</strong> this month</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('shareModal')">&times;</span>
+            <h2>Share Your Score</h2>
+            <p id="shareMessage"></p>
+            <div class="share-link">
+                <input type="text" id="shareLink" class="form-input" readonly>
+                <button class="btn btn-secondary" onclick="copyShareLink()">Copy Link</button>
+            </div>
+            <p class="modal-note">Share this link with friends to show off your vibe!</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>VibeScan</h4>
+                    <p>Your universal social score</p>
+                </div>
+                <div class="footer-section">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#pricing">Pricing</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VibeScan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="dashboard.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
