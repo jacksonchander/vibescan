@@ -1,3 +1,42 @@
+# VibeScan
+
+VibeScan is a demo client-only web app that simulates a "Universal Social Score" experience.
+
+Features
+- 1-day free trial (24 hours) with all premium features unlocked during trial
+- AI-like score engine and subscores
+- Mood tracker, personality evolution, chatbot, community wall, trends, leaderboard
+- Shareable image generator
+- Client-side subscription simulation (stored in `localStorage`)
+
+How the free trial works
+- When you sign up, the trial start time is saved in `localStorage` and lasts 24 hours.
+- During the trial, all premium features are available.
+- After 24 hours, if you are not subscribed, the app redirects to `paywall.html` and locks features.
+
+Subscription
+- Subscriptions are simulated and stored in `localStorage` by the `VibeScanUser` class in `main.js`.
+
+Deploying on GitHub Pages
+1. Push the repository to GitHub.
+2. In the repository settings, enable GitHub Pages and select the `main` branch and `/ (root)` folder.
+3. Optionally add a `CNAME` file for a custom domain and update DNS.
+
+Files
+- `index.html` — landing page
+- `signup.html`, `login.html` — auth flows (client-only)
+- `dashboard.html` — main app dashboard (requires trial or subscription)
+- `paywall.html` — paywall shown after trial expiry
+- `*.js` — feature modules (mood-tracker, leaderboard, chatbot, etc.)
+- `style.css` — app styles
+
+Troubleshooting
+- If you are redirected to the paywall unexpectedly, check `localStorage` for `vibeScanUser`.
+- To reset the demo, open browser DevTools and run `localStorage.clear()` then reload.
+
+Important notes
+- This is a demo app and stores all data in the user's browser. No server or real payment processing is included.
+- Replace sandbox PayPal/Stripe placeholders with real integration and server-side verification for production use.
 # VibeScan - Universal Social Score Platform
 
 A fully functional, modern website that calculates and displays your universal social score across all platforms using AI simulation. VibeScan helps users discover their social personality type, receive daily improvement tips, and share their scores on social media.

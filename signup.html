@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign Up — VibeScan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">VibeScan</a>
+    <nav><a href="login.html">Login</a></nav>
+  </header>
+
+  <main class="center-page">
+    <h1>Start your 1-day Free Trial</h1>
+    <p>Enter your details to create your account and unlock VibeScan for 24 hours.</p>
+    <form id="signupForm" class="card">
+      <label>Name</label>
+      <input id="signupName" type="text" required />
+      <label>Email</label>
+      <input id="signupEmail" type="email" required />
+      <button type="button" class="btn btn-primary" onclick="handleSignup()">Start Free Trial</button>
+    </form>
+    <p class="small">By starting the trial you agree to our <a href="terms.html">Terms</a>.</p>
+  </main>
+
+  <script src="main.js"></script>
+  <script>
+    function handleSignup(){
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      if(!name || !email || !email.includes('@')){ alert('Please enter a valid name and email'); return; }
+
+      // create user and start trial
+      currentUser.email = email;
+      currentUser.hasSeenWelcome = true;
+      currentUser.startTrial(email);
+      currentUser.saveToStorage();
+
+      alert('Welcome '+name+'! Your 1-day free trial starts now.');
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

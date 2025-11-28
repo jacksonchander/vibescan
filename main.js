@@ -271,19 +271,33 @@ function logout() {
 
 // Check access on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // On dashboard page, check if user has access
-    if (window.location.pathname.includes('dashboard.html')) {
-        if (!currentUser.hasAccess()) {
-            alert('You need to start a free trial or subscribe to access the dashboard.');
-            window.location.href = 'index.html';
-        }
-    }
+    // Enforce access across pages (redirect to paywall.html when trial expired)
+    checkAccessAndRedirect();
 
     // Display trial status if on dashboard
     if (document.querySelector('.dashboard-page')) {
         updateTrialStatus();
     }
 });
+
+// Check access globally and redirect to paywall when necessary
+function checkAccessAndRedirect() {
+    const allowedPaths = ['index.html', 'signup.html', 'login.html', 'paywall.html', 'terms.html', 'privacy.html', 'refund-policy.html'];
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+
+    // If subscription active, allow
+    if (currentUser.isSubscriptionActive()) return;
+
+    // If trial active, allow
+    if (currentUser.isTrialActive()) return;
+
+    // Not subscribed and trial expired -> redirect to paywall unless already there or on public pages
+    if (!allowedPaths.includes(path)) {
+        // Save the attempted path so we can redirect after purchase
+        localStorage.setItem('vibeScanRedirectAfterPay', window.location.pathname + window.location.search);
+        window.location.href = 'paywall.html';
+    }
+}
 
 // Update trial status display
 function updateTrialStatus() {

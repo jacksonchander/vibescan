@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Your Free Trial Has Ended — VibeScan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">VibeScan</a>
+  </header>
+
+  <main class="center-page card">
+    <h1>Your Free Trial Has Ended</h1>
+    <p>Your 24-hour free trial has expired. All premium features are now locked.</p>
+
+    <section>
+      <h2>Locked Features</h2>
+      <ul class="features-list">
+        <li>Full Dashboard & Scores</li>
+        <li>AI Mood Tracker</li>
+        <li>Personality Evolution</li>
+        <li>Chat Companion</li>
+        <li>Community Wall</li>
+        <li>Shareable Viral Cards</li>
+        <li>Leaderboard</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Choose a plan</h2>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3>Monthly</h3>
+          <p class="price">$4.99</p>
+          <button class="btn" onclick="unlock('monthly')">Unlock Now</button>
+        </div>
+        <div class="price-card">
+          <h3>Quarterly</h3>
+          <p class="price">$12.99</p>
+          <button class="btn" onclick="unlock('quarterly')">Unlock Now</button>
+        </div>
+        <div class="price-card">
+          <h3>Yearly</h3>
+          <p class="price">$39.99</p>
+          <button class="btn btn-primary" onclick="unlock('yearly')">Unlock Now</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="danger">All payments are final. NO REFUNDS.</p>
+  </main>
+
+  <footer>
+    <a href="terms.html">Terms</a> • <a href="privacy.html">Privacy</a> • <a href="refund-policy.html">Refund Policy</a>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    function unlock(plan){
+      if(confirm('Proceed to unlock VibeScan with the '+plan+' plan? All payments are final.')){
+        currentUser.subscribe(plan);
+        currentUser.saveToStorage();
+        alert('Subscription active. Thank you! Redirecting to dashboard...');
+        const redirect = localStorage.getItem('vibeScanRedirectAfterPay') || 'dashboard.html';
+        localStorage.removeItem('vibeScanRedirectAfterPay');
+        window.location.href = redirect;
+      }
+    }
+  </script>
+</body>
+</html>

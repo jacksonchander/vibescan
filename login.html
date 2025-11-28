@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login — VibeScan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">VibeScan</a>
+    <nav><a href="signup.html">Sign Up</a></nav>
+  </header>
+
+  <main class="center-page">
+    <h1>Login</h1>
+    <form id="loginForm" class="card">
+      <label>Email</label>
+      <input id="loginEmail" type="email" required />
+      <button type="button" class="btn btn-primary" onclick="handleLogin()">Login</button>
+    </form>
+    <p class="small">If you don't have an account, <a href="signup.html">start your free trial</a>.</p>
+  </main>
+
+  <script src="main.js"></script>
+  <script>
+    function handleLogin(){
+      const email = document.getElementById('loginEmail').value.trim();
+      if(!email || !email.includes('@')){ alert('Please enter a valid email'); return; }
+
+      // Try to load saved user
+      const stored = localStorage.getItem('vibeScanUser');
+      if(!stored){ alert('No account found. Please sign up.'); window.location.href='signup.html'; return; }
+      const data = JSON.parse(stored);
+      if(data.email !== email){ alert('Email not found. Please sign up.'); window.location.href='signup.html'; return; }
+
+      // Login success
+      alert('Welcome back! Redirecting to dashboard...');
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
