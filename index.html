@@ -9,6 +9,17 @@
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 </head>
 <body>
+    <!-- Splash Screen (first load only) -->
+    <div id="splash-screen" aria-hidden="true">
+        <img src="assets/logo.svg" class="splash-logo" alt="VibeScan logo">
+        <h2 class="splash-tagline">Scan Your Social Energy. Understand Your Digital Self.</h2>
+    </div>
+
+    <!-- Loading overlay (used during navigation) -->
+    <div id="loading-screen" aria-hidden="true">
+        <div class="loading-spinner" role="img" aria-label="Loading"></div>
+        <p>Loading your vibes...</p>
+    </div>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">

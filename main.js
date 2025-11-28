@@ -278,6 +278,61 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.querySelector('.dashboard-page')) {
         updateTrialStatus();
     }
+
+    // Attach global link click handler to show loader during navigation
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            try {
+                const url = link.getAttribute('href');
+                const target = link.getAttribute('target');
+                if (!url) return;
+                if (url.startsWith('#')) return; // anchor
+                if (url.startsWith('javascript:')) return;
+                if (url.startsWith('mailto:') || url.startsWith('tel:')) return;
+                if (target === '_blank') return; // open in new tab
+                // Show loader for navigations within site
+                showLoader();
+            } catch (err) {
+                // ignore
+            }
+        });
+    });
+});
+
+// Loader controls
+function showLoader() {
+    const loader = document.getElementById('loading-screen');
+    if (!loader) return;
+    loader.style.visibility = 'visible';
+    loader.style.opacity = '1';
+}
+
+function hideLoader() {
+    const loader = document.getElementById('loading-screen');
+    if (!loader) return;
+    loader.style.opacity = '0';
+    setTimeout(() => { if (loader) loader.style.visibility = 'hidden'; }, 350);
+}
+
+// Splash screen behavior (first page load only)
+window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    if (!splash) return;
+
+    const shown = localStorage.getItem('vibeScanSplashShown');
+    if (shown) {
+        splash.style.display = 'none';
+        return;
+    }
+
+    // Disable scroll during splash
+    document.documentElement.style.overflow = 'hidden';
+    setTimeout(() => {
+        if (splash) splash.style.display = 'none';
+        document.documentElement.style.overflow = '';
+        localStorage.setItem('vibeScanSplashShown', '1');
+    }, 3000);
 });
 
 // Check access globally and redirect to paywall when necessary

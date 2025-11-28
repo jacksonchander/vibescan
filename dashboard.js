@@ -72,6 +72,9 @@ function calculateMainScore(subscores) {
 
 // Initialize dashboard
 function initializeDashboard() {
+    // Show loader while initializing
+    if (window.showLoader) showLoader();
+
     // Check if scores exist in localStorage
     let scores = localStorage.getItem('vibeScanScores');
     
@@ -102,6 +105,9 @@ function initializeDashboard() {
     displayBadges(scores);
     displayLeaderboard();
     displayHistory();
+
+    // Hide loader after short delay to allow animations
+    if (window.hideLoader) setTimeout(() => { hideLoader(); }, 1200);
 }
 
 // Display scores on dashboard

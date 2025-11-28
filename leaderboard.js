@@ -1,5 +1,6 @@
 // leaderboard.js - Simulated global leaderboard
 function generateLeaderboard(count=75){
+  if (window.showLoader) showLoader();
   const countries = ['USA','UK','Canada','Brazil','India','Spain','Germany','France','Nigeria','Australia'];
   const names = ['Ava','Liam','Noah','Emma','Olivia','Lucas','Mia','Ethan','Sophia','Amelia','Logan','Isabella'];
   const list = [];
@@ -18,6 +19,7 @@ function generateLeaderboard(count=75){
 
   list.sort((a,b)=>b.score-a.score);
   localStorage.setItem('vibeScanLeaderboard', JSON.stringify(list));
+  if (window.hideLoader) setTimeout(()=>hideLoader(), 600);
   return list;
 }
 
