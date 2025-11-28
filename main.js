@@ -186,19 +186,76 @@ function processPayment() {
     
     if (!confirmed) return;
 
-    // Simulate payment processing
+    // Simulate payment processing (keep for fallback/demo)
     alert('🔒 Redirecting to secure payment gateway...\n\nSimulating payment for ' + plan + ' plan...');
-    
+
     // In a real app, this would integrate with Stripe, PayPal, etc.
     // For now, we'll simulate successful payment
     currentUser.subscribe(plan);
     closeModal('subscriptionModal');
-    
+
     alert('✓ Subscription successful!\n\nYour ' + plan + ' plan is now active.\nRedirecting to your dashboard...');
-    
+
     setTimeout(() => {
         window.location.href = 'dashboard.html';
     }, 1500);
+}
+
+// PayPal / Stripe helper functions (UI glue)
+function showPayPal() {
+    const container = document.getElementById('paypalButtonsContainer');
+    const stripeNotice = document.getElementById('stripeNotice');
+    if (container) container.style.display = 'block';
+    if (stripeNotice) stripeNotice.style.display = 'none';
+    renderPayPalButtons();
+}
+
+function payWithStripe() {
+    const container = document.getElementById('paypalButtonsContainer');
+    const stripeNotice = document.getElementById('stripeNotice');
+    if (container) container.style.display = 'none';
+    if (stripeNotice) stripeNotice.style.display = 'block';
+    // Replace the URL below with your real Stripe Checkout or Payment Link
+    const stripeCheckoutUrl = 'https://checkout.stripe.com/pay/cs_test_placeholder';
+    window.open(stripeCheckoutUrl, '_blank');
+}
+
+function renderPayPalButtons() {
+    const container = document.getElementById('paypalButtonsContainer');
+    if (!container) return;
+
+    if (!window.paypal || !paypal.Buttons) {
+        container.innerHTML = '<p style="color:var(--text-secondary);">PayPal SDK failed to load. You can use the simulated payment button below.</p>';
+        return;
+    }
+
+    // Clear previous buttons if any
+    container.innerHTML = '';
+
+    paypal.Buttons({
+        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+        createOrder: function(data, actions) {
+            // Example hard-coded amount for demo; replace with dynamic pricing in production
+            return actions.order.create({
+                purchase_units: [{ amount: { value: '4.99' } }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Mark user as subscribed on success
+                const plan = window.selectedPlan || 'monthly';
+                currentUser.subscribe(plan);
+                currentUser.saveToStorage();
+                closeModal('subscriptionModal');
+                alert('Payment completed by ' + (details.payer && details.payer.name ? details.payer.name.given_name : 'payer') + '. Thank you!');
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+            });
+        },
+        onError: function(err) {
+            console.error('PayPal Buttons error:', err);
+            alert('PayPal payment failed. Falling back to simulated payment.');
+        }
+    }).render('#paypalButtonsContainer');
 }
 
 // Logout

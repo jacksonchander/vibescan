@@ -223,11 +223,26 @@
             <h2 id="subTitle">Subscribe to VibeScan</h2>
             <p>Choose your preferred subscription plan:</p>
             <div id="subDetails"></div>
-            <button class="btn btn-primary btn-full" onclick="processPayment()">Proceed to Payment</button>
+            <div class="payment-methods">
+                <p style="color:var(--text-secondary); text-align:center; margin-bottom:8px;">Choose payment method:</p>
+                <div style="display:flex; gap:10px; justify-content:center; margin-bottom:12px;">
+                    <button id="payWithPayPal" class="btn btn-secondary" onclick="showPayPal()">PayPal</button>
+                    <button id="payWithStripe" class="btn btn-primary" onclick="payWithStripe()">Stripe</button>
+                </div>
+            </div>
+
+            <div id="paypalButtonsContainer" style="display:none; margin-bottom:12px; text-align:center;"></div>
+            <div id="stripeNotice" style="display:none; text-align:center; color:var(--text-secondary); margin-bottom:12px;">
+                <p>Stripe Checkout will open in a new tab. (Replace the placeholder link in <code>main.js</code> with your Stripe Payment Link.)</p>
+            </div>
+
+            <button id="simulatePaymentBtn" class="btn btn-primary btn-full" onclick="processPayment()">Proceed to Payment (Simulate)</button>
             <p class="modal-warning">⚠️ This is a non-refundable subscription. By subscribing, you agree to our terms.</p>
         </div>
     </div>
 
     <script src="main.js"></script>
+    <!-- PayPal SDK: replace 'sb' with your PayPal client-id for production -->
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
 </body>
 </html>
