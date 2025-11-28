@@ -21,6 +21,13 @@ header a{color:var(--text);text-decoration:none;font-weight:600}
 
 .hero{padding:48px 20px;text-align:center}
 .hero h2{font-size:2.2rem;color:var(--accent);text-shadow:0 8px 40px rgba(131,56,236,0.12)}
+.hero-logo{width:96px;height:auto;margin:0 auto 12px;display:block}
+.tagline{font-size:18px;color:var(--muted);margin-top:6px;margin-bottom:18px}
+
+/* Dashboard logo styles */
+.dashboard-logo{width:72px;height:auto;margin-right:14px;vertical-align:middle}
+.site-logo{width:44px;height:auto;vertical-align:middle;margin-right:8px}
+.footer-logo{width:120px;height:auto;display:block;margin:0 auto 10px}
 .hero p{color:var(--muted);margin-bottom:18px}
 
 .btn{padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);cursor:pointer}
@@ -46,6 +53,8 @@ footer{padding:20px;text-align:center;color:var(--muted);margin-top:40px}
 
 /* Responsive tweaks */
 @media(max-width:720px){.pricing-grid{flex-direction:column}.hero{padding:28px 16px}}
+
+@media(max-width:480px){.hero-logo{width:72px}.dashboard-logo{width:48px}.tagline{font-size:15px}}
 
 /* ===========================
    CONTAINER & LAYOUT

@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Dashboard - VibeScan</title>
+    <meta name="description" content="VibeScan — Scan Your Social Energy. Understand Your Digital Self. Get your universal social score with AI-powered insights.">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%2300d4ff'>✨</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 </head>
 <body class="dashboard-page">
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon">✨</span>
-                <span class="logo-text">VibeScan</span>
-            </div>
+            <a href="index.html" class="logo"><img src="assets/logo.svg" class="site-logo" alt="VibeScan logo"><span class="logo-text">VibeScan</span></a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="#leaderboard">Leaderboard</a></li>
@@ -27,11 +25,17 @@
     <div class="dashboard-container">
         <!-- Header Section -->
         <section class="dashboard-header">
-            <div class="header-content">
-                <h1>Your Dashboard</h1>
-                <p class="header-subtitle" id="lastUpdated">Last updated: Today</p>
-                <button class="btn btn-secondary" onclick="refreshScore()">🔄 Refresh Score</button>
-            </div>
+                <div class="header-content">
+                                <img src="assets/logo.svg" class="dashboard-logo" alt="VibeScan logo" />
+                                <div style="display:inline-block;vertical-align:middle">
+                                    <h1>Your Dashboard</h1>
+                                    <h2 class="tagline">Scan Your Social Energy. Understand Your Digital Self.</h2>
+                                    <p class="header-subtitle" id="lastUpdated">Last updated: Today</p>
+                                </div>
+                                <div style="margin-left:auto">
+                                    <button class="btn btn-secondary" onclick="refreshScore()">🔄 Refresh Score</button>
+                                </div>
+                        </div>
         </section>
 
         <!-- Score Section -->
@@ -230,12 +234,11 @@
 
     <footer class="footer">
         <div class="container">
+            <img src="assets/logo.svg" class="footer-logo" alt="VibeScan logo">
+            <p class="tagline">Scan Your Social Energy. Understand Your Digital Self.</p>
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>VibeScan</h4>
-                    <p>Your universal social score</p>
-                </div>
-                <div class="footer-section">
+                    <h4>Quick Links</h4>
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="index.html#pricing">Pricing</a></li>

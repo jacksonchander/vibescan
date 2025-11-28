@@ -37,6 +37,12 @@ Troubleshooting
 Important notes
 - This is a demo app and stores all data in the user's browser. No server or real payment processing is included.
 - Replace sandbox PayPal/Stripe placeholders with real integration and server-side verification for production use.
+
+## Logo & Tagline
+- Logo located at `/assets/logo.svg`
+- Favicon located at `/assets/favicon.svg`
+- Tagline: “Scan Your Social Energy. Understand Your Digital Self.”
+Used across all pages for consistent branding.
 # VibeScan - Universal Social Score Platform
 
 A fully functional, modern website that calculates and displays your universal social score across all platforms using AI simulation. VibeScan helps users discover their social personality type, receive daily improvement tips, and share their scores on social media.
