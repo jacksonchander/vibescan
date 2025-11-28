@@ -1,256 +1,507 @@
-<!DOCTYPE html>
+<!--
+File: index.html
+VibeScan full single-file app (splash, loading, trial, paywall, PayPal monthly/yearly subscriptions, dashboard, mood tracker, shareable images, leaderboard, community, chatbot, profile builder, settings, legal pages)
+
+REPLACE THESE VALUES BELOW BEFORE DEPLOY:
+ - PAYPAL_CLIENT_ID = "REPLACE_WITH_YOUR_PAYPAL_CLIENT_ID"
+ - MONTHLY_PLAN_ID   = "REPLACE_WITH_MONTHLY_PLAN_ID"
+ - YEARLY_PLAN_ID    = "REPLACE_WITH_YEARLY_PLAN_ID"
+
+Deploy: upload to GitHub Pages (username.github.io/repo) or Netlify.
+-->
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="VibeScan — Scan Your Social Energy. Understand Your Digital Self. Get your universal social score with AI-powered insights.">
-    <title>VibeScan - Discover Your Universal Social Score</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VibeScan — Scan Your Social Energy</title>
+<meta name="description" content="VibeScan — Scan Your Social Energy. Understand Your Digital Self. Free 1-day trial. Monthly & Yearly PayPal subscriptions." />
+<style>
+  /* ====== THEME & LAYOUT (compact) ====== */
+  :root{
+    --bg:#071027; --card:#0f1b2b; --glass: rgba(255,255,255,0.03);
+    --accent1:#7b4dff; --accent2:#00e0c6; --muted:#9fb0c8; --text:#e6eef8;
+    --success:#4ad29f; --danger:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#061022 0%,#071227 100%);color:var(--text);min-height:100vh}
+  a{color:var(--accent1)}
+  #splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 20% 20%, rgba(123,77,255,0.08), transparent 20%);z-index:9999;}
+  #splash svg{width:160px;filter:drop-shadow(0 12px 34px rgba(123,77,255,0.2));animation:splashPulse 2s infinite}
+  @keyframes splashPulse{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+  .splash-tag{margin-top:14px;color:var(--muted);opacity:.95;font-size:1rem}
+  .wrap{max-width:1100px;margin:80px auto;padding:20px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo-small{width:44px}
+  .title{font-size:1.2rem;font-weight:700}
+  .tagline{color:var(--muted);font-size:0.9rem}
+  .hero{background:linear-gradient(90deg, rgba(123,77,255,0.08), rgba(0,224,198,0.02));padding:30px;border-radius:12px;margin-top:18px;text-align:center;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+  .cta{margin-top:12px;padding:12px 18px;border-radius:12px;border:none;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#041025;font-weight:700;cursor:pointer;font-size:1rem}
+  .muted{color:var(--muted)}
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+  .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 24px rgba(2,6,23,0.5);}
+  .score-large{font-size:2.6rem;font-weight:800}
+  .subscores{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .pill{background:var(--glass);padding:8px 10px;border-radius:999px;color:var(--muted);font-weight:600}
+  .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#041025;font-weight:700}
+  .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:90%;max-width:760px;background:#061322;padding:18px;border-radius:12px;z-index:9999;box-shadow:0 12px 40px rgba(0,0,0,0.6);display:none}
+  .plans{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .plan{flex:1;min-width:220px;padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.03)}
+  .plan h3{margin:0 0 6px 0}
+  .plan p{margin:0 0 10px 0;color:var(--muted)}
+  .small{font-size:0.9rem;padding:8px 10px}
+  input, select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
+  .leaderboard-list{max-height:240px;overflow:auto;padding-right:8px}
+  .community-list{max-height:180px;overflow:auto;padding-right:6px}
+  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:40px}
+  @media (max-width:920px){.grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-    <!-- Splash Screen (first load only) -->
-    <div id="splash-screen" aria-hidden="true">
-        <img src="assets/logo.svg" class="splash-logo" alt="VibeScan logo">
-        <h2 class="splash-tagline">Scan Your Social Energy. Understand Your Digital Self.</h2>
+
+<div id="splash">
+  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0" stop-color="#7b4dff"/>
+        <stop offset="1" stop-color="#00e0c6"/>
+      </linearGradient>
+    </defs>
+    <rect width="200" height="200" rx="24" fill="url(#g)"/>
+    <path d="M45 120c20-25 40-40 70-40s50 15 70 40" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+    <text x="100" y="150" text-anchor="middle" font-family="Inter, Arial" font-weight="700" font-size="28" fill="#041025">VibeScan</text>
+  </svg>
+  <div class="splash-tag">Scan Your Social Energy. Understand Your Digital Self.</div>
+</div>
+
+<div class="wrap" id="mainWrap" style="display:none">
+  <header>
+    <div class="brand">
+      <img class="logo-small" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' rx='24' fill='%237b4dff'/><text x='100' y='115' font-family='Inter' font-weight='700' font-size='28' fill='%23041225' text-anchor='middle'>V</text></svg>" alt="logo">
+      <div>
+        <div class="title">VibeScan</div>
+        <div class="tagline">Scan Your Social Energy. Understand Your Digital Self.</div>
+      </div>
     </div>
-
-    <!-- Loading overlay (used during navigation) -->
-    <div id="loading-screen" aria-hidden="true">
-        <div class="loading-spinner" role="img" aria-label="Loading"></div>
-        <p>Loading your vibes...</p>
+    <div>
+      <span id="trialInfo" class="muted" style="margin-right:12px"></span>
+      <button id="settingsBtn" class="small">Settings</button>
     </div>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo"><img src="assets/logo.svg" class="site-logo" alt="VibeScan logo"><span class="logo-text">VibeScan</span></a>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="dashboard.html" class="nav-dashboard">Dashboard</a></li>
-            </ul>
-        </div>
-    </nav>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <img src="assets/logo.svg" class="hero-logo" alt="VibeScan logo" />
-            <h1 class="hero-title">VibeScan</h1>
-            <h2 class="tagline">Scan Your Social Energy. Understand Your Digital Self.</h2>
-            <p class="hero-description">
-                Unlock your social potential with AI-powered personality insights across all platforms
-            </p>
-            <button class="btn btn-primary btn-large hero-btn" onclick="startFreeTrial()">
-                Start Your Free 1-Day Full Access Trial
-            </button>
-            <p class="trial-info">No credit card required • Cancel anytime</p>
-        </div>
-        <div class="hero-visual">
-            <div class="score-preview">
-                <div class="score-circle-large">
-                    <span class="score-number">84</span>
-                    <span class="score-label">Sample Score</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <h2 class="section-title">Powerful Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>AI Multi-Platform Score</h3>
-                    <p>Get a comprehensive score analyzing your personality across all social platforms in real-time</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💡</div>
-                    <h3>Persona Improvement Tips</h3>
-                    <p>Receive daily AI-generated personalized tips to boost your social score and improve your vibe</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Shareable Score Graphics</h3>
-                    <p>Generate stunning graphics of your score to share on Instagram, Twitter, TikTok, and Facebook</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✨</div>
-                    <h3>Daily AI Updates</h3>
-                    <p>Your score updates daily with fresh insights and trending personality badges</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏆</div>
-                    <h3>Achievement Badges</h3>
-                    <p>Earn exclusive badges as you improve your social vibe and reach milestone scores</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Leaderboard</h3>
-                    <p>Compare your vibe with others and see where you stand in the global community</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="pricing">
-        <div class="container">
-            <h2 class="section-title">Simple, Transparent Pricing</h2>
-            <div class="pricing-grid">
-                <!-- Free Trial Card -->
-                <div class="pricing-card free-trial-card">
-                    <div class="pricing-badge">Most Popular</div>
-                    <h3 class="pricing-title">Free Trial</h3>
-                    <div class="pricing-price">
-                        <span class="price-amount">$0</span>
-                        <span class="price-duration">for 1 day</span>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✓ Full access to dashboard</li>
-                        <li>✓ View your social score</li>
-                        <li>✓ Daily AI tips</li>
-                        <li>✓ Share score graphics</li>
-                    </ul>
-                    <button class="btn btn-primary btn-full" onclick="startFreeTrial()">Get Free Trial</button>
-                </div>
-
-                <!-- Monthly Card -->
-                <div class="pricing-card">
-                    <h3 class="pricing-title">Monthly</h3>
-                    <div class="pricing-price">
-                        <span class="price-amount">$4.99</span>
-                        <span class="price-duration">per month</span>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✓ Everything in Free Trial</li>
-                        <li>✓ Premium insights</li>
-                        <li>✓ Advanced badges</li>
-                        <li>✓ Monthly updates</li>
-                    </ul>
-                    <button class="btn btn-secondary btn-full" onclick="subscribePlan('monthly')">Subscribe Now</button>
-                </div>
-
-                <!-- Quarterly Card -->
-                <div class="pricing-card">
-                    <h3 class="pricing-title">Quarterly</h3>
-                    <div class="pricing-price">
-                        <span class="price-amount">$12.99</span>
-                        <span class="price-duration">per 3 months</span>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✓ Everything in Monthly</li>
-                        <li>✓ Priority support</li>
-                        <li>✓ Exclusive features</li>
-                        <li>✓ Save 13%</li>
-                    </ul>
-                    <button class="btn btn-secondary btn-full" onclick="subscribePlan('quarterly')">Subscribe Now</button>
-                </div>
-
-                <!-- Yearly Card -->
-                <div class="pricing-card">
-                    <div class="pricing-badge">Best Value</div>
-                    <h3 class="pricing-title">Yearly</h3>
-                    <div class="pricing-price">
-                        <span class="price-amount">$39.99</span>
-                        <span class="price-duration">per year</span>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✓ Everything included</li>
-                        <li>✓ VIP support</li>
-                        <li>✓ Early access to new features</li>
-                        <li>✓ Save 33%</li>
-                    </ul>
-                    <button class="btn btn-secondary btn-full" onclick="subscribePlan('yearly')">Subscribe Now</button>
-                </div>
-            </div>
-
-            <!-- Non-Refundable Warning -->
-            <div class="warning-box">
-                <p class="warning-text">⚠️ <strong>All subscriptions are non-refundable.</strong> Please review the terms carefully before purchasing. Subscriptions renew automatically; you can cancel anytime from your account settings.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2>Ready to Discover Your Vibe?</h2>
-            <p>Join thousands of users improving their social presence with VibeScan</p>
-            <button class="btn btn-primary btn-large" onclick="startFreeTrial()">Start Free Trial Now</button>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <img src="assets/logo.svg" class="footer-logo" alt="VibeScan logo">
-            <p class="tagline">Scan Your Social Energy. Understand Your Digital Self.</p>
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="dashboard.html">Dashboard</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 VibeScan. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modals -->
-    <div id="trialModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('trialModal')">&times;</span>
-            <h2>Start Your Free Trial</h2>
-            <p>You're one step away from discovering your social score!</p>
-            <div class="form-group">
-                <input type="email" placeholder="Enter your email" id="trialEmail" class="form-input">
-            </div>
-            <button class="btn btn-primary btn-full" onclick="confirmTrial()">Start Trial (1 Day Free)</button>
-            <p class="modal-note">No credit card required. Cancel anytime.</p>
-        </div>
+  <section class="hero card">
+    <h1 style="margin:0">Discover Your Universal Social Score — Free 1-Day Trial</h1>
+    <p class="muted">All premium features are unlocked during the trial. After 24 hours, purchase Monthly or Yearly to continue.</p>
+    <div style="margin-top:14px">
+      <button id="startTrial" class="cta">Start Free 1-Day Trial</button>
+      <button id="openPaywall" class="cta" style="background:transparent;color:var(--text);margin-left:12px;border:1px solid rgba(255,255,255,0.06)">Subscribe</button>
     </div>
+  </section>
 
-    <div id="subscriptionModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('subscriptionModal')">&times;</span>
-            <h2 id="subTitle">Subscribe to VibeScan</h2>
-            <p>Choose your preferred subscription plan:</p>
-            <div id="subDetails"></div>
-            <div class="payment-methods">
-                <p style="color:var(--text-secondary); text-align:center; margin-bottom:8px;">Choose payment method:</p>
-                <div style="display:flex; gap:10px; justify-content:center; margin-bottom:12px;">
-                    <button id="payWithPayPal" class="btn btn-secondary" onclick="showPayPal()">PayPal</button>
-                    <button id="payWithStripe" class="btn btn-primary" onclick="payWithStripe()">Stripe</button>
-                </div>
-            </div>
-
-            <div id="paypalButtonsContainer" style="display:none; margin-bottom:12px; text-align:center;"></div>
-            <div id="stripeNotice" style="display:none; text-align:center; color:var(--text-secondary); margin-bottom:12px;">
-                <p>Stripe Checkout will open in a new tab. (Replace the placeholder link in <code>main.js</code> with your Stripe Payment Link.)</p>
-            </div>
-
-            <button id="simulatePaymentBtn" class="btn btn-primary btn-full" onclick="processPayment()">Proceed to Payment (Simulate)</button>
-            <p class="modal-warning">⚠️ This is a non-refundable subscription. By subscribing, you agree to our terms.</p>
+  <div class="grid">
+    <div>
+      <div class="card" id="dashboardCard">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div class="muted">Your Universal Social Score</div>
+            <div class="score-large" id="scoreLarge">--</div>
+            <div style="margin-top:6px"><span id="badgeEarned" class="badge" style="display:none">Badge</span></div>
+          </div>
+          <div style="width:220px;text-align:center">
+            <canvas id="meterCanvas" width="200" height="200"></canvas>
+            <div class="muted" style="margin-top:8px" id="personaType">Persona: --</div>
+          </div>
         </div>
+        <div class="subscores" id="subscoresArea">
+          <div class="pill">Confidence: <strong id="confVal">--</strong></div>
+          <div class="pill">Friendliness: <strong id="friendVal">--</strong></div>
+          <div class="pill">Trust: <strong id="trustVal">--</strong></div>
+          <div class="pill">Professional: <strong id="profVal">--</strong></div>
+          <div class="pill">Risk: <strong id="riskVal">--</strong></div>
+        </div>
+        <div style="margin-top:14px">
+          <button id="generateShare" class="small" style="padding:8px 12px;border:none;background:var(--accent1);color:#041025;border-radius:6px;cursor:pointer;font-weight:700">Generate Share</button>
+          <button id="exportPNG" class="small" style="padding:8px 12px;border:none;background:var(--accent2);color:#041025;border-radius:6px;cursor:pointer;font-weight:700;margin-left:8px">Download PNG</button>
+        </div>
+        <div style="margin-top:12px" id="dailyTipsArea">
+          <h3 style="margin:0 0 6px 0">Daily AI Tips</h3>
+          <ul id="tipsList" style="margin-top:6px;color:var(--muted)"></ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Mood Tracker</h3>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select id="moodSelect"><option>😊 Happy</option><option>😐 Neutral</option><option>😔 Sad</option><option>🤩 Excited</option></select>
+          <button id="saveMood" class="small" style="padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer">Save</button>
+        </div>
+        <div id="moodHistory" style="margin-top:10px;color:var(--muted)"></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Profile</h3>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <input id="profileName" placeholder="Name">
+          <input id="profileBio" placeholder="Bio">
+        </div>
+        <button id="buildProfile" class="small" style="padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer">Build</button>
+        <div id="profileSuggestions" style="margin-top:10px;color:var(--muted)"></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Community</h3>
+        <div style="display:flex;gap:8px">
+          <input placeholder="Share..." id="communityInput">
+          <button id="postCommunity" class="small" style="padding:8px;background:var(--accent2);color:#041025;border:none;border-radius:6px;cursor:pointer">Post</button>
+        </div>
+        <div class="community-list" id="communityList" style="margin-top:8px"></div>
+      </div>
     </div>
+    <aside>
+      <div class="card">
+        <h3>Leaderboard</h3>
+        <div class="leaderboard-list" id="leaderboardList"></div>
+        <button id="refreshLeaders" class="small" style="margin-top:8px;padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer;width:100%">Refresh</button>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>AI Chat</h3>
+        <div id="chatArea" style="height:160px;overflow:auto;background:rgba(255,255,255,0.01);padding:8px;border-radius:8px"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="chatInput" placeholder="Ask...">
+          <button id="sendChat" class="small" style="padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer">Send</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Settings</h3>
+        <button id="resetData" class="small" style="width:100%;padding:8px;background:var(--danger);color:#fff;border:none;border-radius:6px;cursor:pointer">Reset Data</button>
+      </div>
+    </aside>
+  </div>
 
-    <script src="main.js"></script>
-    <!-- PayPal SDK: replace 'sb' with your PayPal client-id for production -->
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+  <footer>
+    <p>© 2025 VibeScan — <a href="#" id="openTerms">Terms</a> • <a href="#" id="openPrivacy">Privacy</a> • <a href="#" id="openRefund">Refund</a></p>
+    <p class="muted">Made with 💜 — NO REFUNDS.</p>
+  </footer>
+</div>
+
+<div id="payModal" class="modal">
+  <h2 style="margin-top:0">Trial Ended</h2>
+  <p class="muted">Choose a plan to continue. NO REFUNDS.</p>
+  <div class="plans">
+    <div class="plan">
+      <h3>Monthly</h3>
+      <p>$3.99/mo</p>
+      <div id="paypal-monthly"></div>
+    </div>
+    <div class="plan">
+      <h3>Yearly</h3>
+      <p>$29.99/yr</p>
+      <div id="paypal-yearly"></div>
+    </div>
+  </div>
+  <button id="closePay" class="small" style="margin-top:12px;padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer">Close</button>
+</div>
+
+<div id="termsModal" class="modal"><h3>Terms</h3><p>VibeScan is simulated. Results are suggestions.</p><button class="small" style="padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer" onclick="closeModal('termsModal')">Close</button></div>
+<div id="privacyModal" class="modal"><h3>Privacy</h3><p>Data stored locally. No uploads.</p><button class="small" style="padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer" onclick="closeModal('privacyModal')">Close</button></div>
+<div id="refundModal" class="modal"><h3>Refund Policy</h3><p>NO REFUNDS.</p><button class="small" style="padding:8px;background:var(--accent1);color:#041025;border:none;border-radius:6px;cursor:pointer" onclick="closeModal('refundModal')">Close</button></div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=REPLACE_WITH_YOUR_PAYPAL_CLIENT_ID&vault=true&intent=subscription"></script>
+<script>
+const PAYPAL_CLIENT_ID = "REPLACE_WITH_YOUR_PAYPAL_CLIENT_ID";
+const MONTHLY_PLAN_ID   = "REPLACE_WITH_MONTHLY_PLAN_ID";
+const YEARLY_PLAN_ID    = "REPLACE_WITH_YEARLY_PLAN_ID";
+const $ = id => document.getElementById(id);
+const show = id => { const e=$(id); if(e){e.style.display='block';} };
+const hide = id => { const e=$(id); if(e){e.style.display='none';} };
+const setText = (id,txt) => { const e=$(id); if(e) e.innerText = txt; };
+let meterCtx=null, meterCanvas=null;
+const ONE_DAY_MS = 24*60*60*1000;
+
+window.addEventListener('load', () => {
+  setTimeout(()=> {
+    const splash = document.getElementById('splash');
+    if (splash) splash.style.display='none';
+    document.getElementById('mainWrap').style.display='block';
+    initialize();
+  }, 2600);
+});
+
+function startTrialNow(){
+  if (!localStorage.getItem('vibescan_trial_start')){
+    localStorage.setItem('vibescan_trial_start', Date.now().toString());
+  }
+  localStorage.setItem('vibescan_session','trial');
+  initialize();
+}
+function isPremium(){
+  const p = localStorage.getItem('vibescan_premium');
+  return p === 'monthly' || p === 'yearly';
+}
+function premiumType(){
+  return localStorage.getItem('vibescan_premium') || null;
+}
+function trialRemainingMs(){
+  const s = localStorage.getItem('vibescan_trial_start');
+  if(!s) return 0;
+  const start = Number(s);
+  const diff = Date.now() - start;
+  return Math.max(0, ONE_DAY_MS - diff);
+}
+function trialActive(){
+  return trialRemainingMs() > 0;
+}
+function initialize(){
+  $('startTrial').onclick = startTrialNow;
+  $('openPaywall').onclick = ()=> openPaywall();
+  $('closePay').onclick = ()=> closePaywall();
+  $('generateShare').onclick = generateShareable;
+  $('exportPNG').onclick = downloadShare;
+  $('refreshLeaders').onclick = generateLeaders;
+  $('postCommunity').onclick = postCommunity;
+  $('sendChat').onclick = sendChat;
+  $('saveMood').onclick = saveMood;
+  $('buildProfile').onclick = buildProfile;
+  $('resetData').onclick = resetData;
+  $('settingsBtn').onclick = ()=> alert('Settings available here.');
+  $('openTerms').onclick = ()=> openModal('termsModal');
+  $('openPrivacy').onclick = ()=> openModal('privacyModal');
+  $('openRefund').onclick = ()=> openModal('refundModal');
+  updateAccessUI();
+  meterCanvas = $('meterCanvas');
+  if(meterCanvas) meterCtx = meterCanvas.getContext('2d');
+  if (isPremium() || trialActive()) {
+    renderDashboard();
+  } else {
+    openPaywall();
+  }
+  setupPayPalButtons();
+  generateLeaders();
+  refreshCommunity();
+  refreshMoodHistory();
+}
+function updateAccessUI(){
+  if (isPremium()) {
+    setText('trialInfo', 'Premium • ' + premiumType());
+  } else if (trialActive()){
+    const ms = trialRemainingMs();
+    const hours = Math.floor(ms / (1000*60*60));
+    const mins = Math.floor((ms % (1000*60*60)) / (1000*60));
+    setText('trialInfo', `Trial • ${hours}h ${mins}m`);
+  } else {
+    setText('trialInfo', 'Trial expired');
+  }
+}
+function renderDashboard(){
+  hide('payModal');
+  const score = randomInt(40,98);
+  setText('scoreLarge', score);
+  setText('confVal', randomInt(40,98));
+  setText('friendVal', randomInt(40,98));
+  setText('trustVal', randomInt(40,98));
+  setText('profVal', randomInt(40,98));
+  setText('riskVal', randomInt(1,20));
+  setText('personaType', randomPick(["The Visionary","The Charmer","The Guardian","The Rebel","The Strategist","The Empath","The Firestarter"]));
+  generateTips();
+  drawMeter(score);
+  awardBadge(score);
+}
+function drawMeter(value){
+  if(!meterCtx) return;
+  const ctx = meterCtx;
+  const w = meterCanvas.width, h = meterCanvas.height;
+  ctx.clearRect(0,0,w,h);
+  const cx = w/2, cy = h/2, r = Math.min(w,h)/2 - 10;
+  ctx.lineWidth = 12;
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.arc(cx,cy,r, Math.PI*0.75, Math.PI*0.25, false);
+  ctx.stroke();
+  const start = Math.PI*0.75;
+  const end = start + ( (value/100) * (Math.PI*1.5) );
+  const g = ctx.createLinearGradient(0,0,w,0);
+  g.addColorStop(0,'#7b4dff'); g.addColorStop(1,'#00e0c6');
+  ctx.beginPath();
+  ctx.strokeStyle = g;
+  ctx.lineCap = 'round';
+  ctx.arc(cx,cy,r, start, end, false);
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.font = '24px Inter, Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(value + '/100', cx, cy+8);
+}
+function generateTips(){
+  const tips = ["Post authentic content","Engage daily","Use clear photo","Keep captions concise","Post at peak hours"];
+  const ul = $('tipsList');
+  ul.innerHTML = '';
+  for(let i=0;i<4;i++){
+    const li = document.createElement('li');
+    li.innerText = tips[i];
+    ul.appendChild(li);
+  }
+}
+function awardBadge(score){
+  const badge = $('badgeEarned');
+  if(score>85){ badge.style.display='inline-block'; badge.innerText='Golden Aura'; localStorage.setItem('vibescan_badge','Golden Aura'); }
+  else if(score>65){ badge.style.display='inline-block'; badge.innerText='Silver Pulse'; localStorage.setItem('vibescan_badge','Silver Pulse'); }
+  else if(score>45){ badge.style.display='inline-block'; badge.innerText='Bronze Wave'; localStorage.setItem('vibescan_badge','Bronze Wave'); }
+  else { badge.style.display='inline-block'; badge.innerText='Shadow'; localStorage.setItem('vibescan_badge','Shadow'); }
+}
+function randomInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function randomPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function openPaywall(){ show('payModal'); }
+function closePaywall(){ hide('payModal'); }
+function setupPayPalButtons(){
+  try {
+    if (typeof paypal === 'undefined') {
+      console.warn('PayPal SDK not loaded.');
+      return;
+    }
+    paypal.Buttons({
+      style:{layout:'vertical',shape:'pill',label:'subscribe',color:'gold'},
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({ plan_id: MONTHLY_PLAN_ID });
+      },
+      onApprove: function(data, actions) {
+        localStorage.setItem('vibescan_premium','monthly');
+        alert('Monthly activated!');
+        renderDashboard();
+        closePaywall();
+      },
+      onError: function(err){
+        alert('Payment failed');
+      }
+    }).render('#paypal-monthly');
+    paypal.Buttons({
+      style:{layout:'vertical',shape:'pill',label:'subscribe',color:'blue'},
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({ plan_id: YEARLY_PLAN_ID });
+      },
+      onApprove: function(data, actions) {
+        localStorage.setItem('vibescan_premium','yearly');
+        alert('Yearly activated!');
+        renderDashboard();
+        closePaywall();
+      },
+      onError: function(err){
+        alert('Payment failed');
+      }
+    }).render('#paypal-yearly');
+  } catch(e){ console.error(e); }
+}
+let lastShareData=null;
+function generateShareable(){
+  const name = localStorage.getItem('vibescan_name') || 'You';
+  const score = $('scoreLarge').innerText || '--';
+  const persona = $('personaType').innerText || '--';
+  const badge = localStorage.getItem('vibescan_badge') || '';
+  const c = document.createElement('canvas');
+  c.width = 1200; c.height = 630;
+  const ctx = c.getContext('2d');
+  const grad = ctx.createLinearGradient(0,0,1200,0); grad.addColorStop(0,'#7b4dff'); grad.addColorStop(1,'#00e0c6');
+  ctx.fillStyle = grad; ctx.fillRect(0,0,1200,630);
+  ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fillRect(60,60,1080,510);
+  ctx.fillStyle='#fff'; ctx.font='bold 60px Arial'; ctx.fillText('VibeScan',100,140);
+  ctx.font='42px Arial'; ctx.fillText(`${name}'s Score: ${score}/100`,100,230);
+  ctx.font='28px Arial'; ctx.fillText(`Persona: ${persona}`,100,290);
+  ctx.font='26px Arial'; ctx.fillText(`Badge: ${badge}`,100,340);
+  ctx.font='20px Arial'; ctx.fillText('Scan Your Social Energy.',100,420);
+  lastShareData = c.toDataURL('image/png');
+  alert('Image generated!');
+}
+function downloadShare(){
+  if(!lastShareData){ alert('Generate first.'); return; }
+  const a = document.createElement('a'); a.href=lastShareData; a.download='vibescan-score.png'; a.click();
+}
+function generateLeaders(){
+  const list = $('leaderboardList');
+  list.innerHTML = '';
+  const arr = [];
+  for(let i=0;i<50;i++){
+    const name = randomPick(['Alex','Maya','Liam','Noah','Ava','Zara','Ravi']) + Math.floor(Math.random()*999);
+    const score = randomInt(20,99);
+    arr.push({name,score});
+  }
+  const userScore = Number($('scoreLarge').innerText) || randomInt(40,98);
+  arr.push({name:'You', score:userScore});
+  arr.sort((a,b)=>b.score-a.score);
+  arr.slice(0,30).forEach((u,idx)=>{
+    const div = document.createElement('div');
+    div.style.padding='8px'; div.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+    div.innerHTML = `<strong>#${idx+1}</strong> ${u.name} <span style="float:right">${u.score}</span>`;
+    list.appendChild(div);
+  });
+}
+function postCommunity(){
+  const txt = $('communityInput').value.trim();
+  if(!txt) return;
+  const items = JSON.parse(localStorage.getItem('vibescan_community')||'[]');
+  items.unshift({text:txt,ts:Date.now()});
+  localStorage.setItem('vibescan_community', JSON.stringify(items.slice(0,200)));
+  $('communityInput').value='';
+  refreshCommunity();
+}
+function refreshCommunity(){
+  const list = $('communityList'); list.innerHTML='';
+  const items = JSON.parse(localStorage.getItem('vibescan_community')||'[]');
+  items.slice(0,50).forEach(it=>{
+    const d = document.createElement('div'); d.style.padding='8px'; d.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+    d.innerHTML = `<div style="color:var(--muted);font-size:13px">${new Date(it.ts).toLocaleString()}</div>${it.text}`;
+    list.appendChild(d);
+  });
+}
+function sendChat(){
+  const q = $('chatInput').value.trim();
+  if(!q) return;
+  const area = $('chatArea');
+  const userDiv = document.createElement('div'); userDiv.style.textAlign='right'; userDiv.innerHTML=`<div style="display:inline-block;background:#1b2b3b;padding:8px;border-radius:8px;margin:4px">${q}</div>`;
+  area.appendChild(userDiv);
+  $('chatInput').value='';
+  setTimeout(()=>{
+    const reply = q.toLowerCase().includes('improve') ? "Post 3x/week and engage with comments." : "Keep doing what resonates!";
+    const botDiv = document.createElement('div'); botDiv.style.textAlign='left';
+    botDiv.innerHTML = `<div style="display:inline-block;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#041025;padding:8px;border-radius:8px;margin:4px">${reply}</div>`;
+    area.appendChild(botDiv);
+    area.scrollTop = area.scrollHeight;
+  },700);
+}
+function saveMood(){
+  const mood = $('moodSelect').value;
+  const items = JSON.parse(localStorage.getItem('vibescan_moods')||'[]');
+  items.unshift({mood,ts:Date.now()});
+  localStorage.setItem('vibescan_moods', JSON.stringify(items.slice(0,200)));
+  refreshMoodHistory();
+}
+function refreshMoodHistory(){
+  const el = $('moodHistory'); el.innerHTML='';
+  const items = JSON.parse(localStorage.getItem('vibescan_moods')||'[]');
+  items.slice(0,10).forEach(it=>{
+    const d = document.createElement('div'); d.style.padding='6px'; d.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+    d.innerHTML = `${new Date(it.ts).toLocaleString()} • ${it.mood}`;
+    el.appendChild(d);
+  });
+}
+function buildProfile(){
+  const name = $('profileName').value.trim() || 'Anonymous';
+  const bio = $('profileBio').value.trim() || 'No bio';
+  localStorage.setItem('vibescan_name', name);
+  localStorage.setItem('vibescan_bio', bio);
+  $('profileSuggestions').innerHTML = `<div>Instagram: ${bio} 📸</div><div>TikTok: ${name} shows how in 30s</div><div>YouTube: ${bio} — watch for more</div>`;
+}
+function resetData(){
+  if(confirm('Reset all VibeScan data?')) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+function openModal(id){ const e=$(id); if(e){e.style.display='block';} }
+function closeModal(id){ const e=$(id); if(e){e.style.display='none';} }
+setInterval(()=> {
+  updateAccessUI();
+  if(!isPremium() && !trialActive()) {
+    openPaywall();
+  }
+}, 1000*20);
+</script>
+
 </body>
 </html>
